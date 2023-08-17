@@ -33,7 +33,7 @@ export default function ContactEdit() {
     return (
         <section className="contact-edit">
             <NavLink to='/contact'>Back</NavLink>
-            <img className="contact-img" src={contact?.imgURL || 'src/assets/images/contactDefault.png'}>
+            <img className="contact-img" src={contact?.imgURL || 'https://res.cloudinary.com/dpv9yspqs/image/upload/v1692266679/CoinWallet/userDefault_fb4jz5.png'}>
             </img>
             <form onSubmit={onSave}>
                 <label htmlFor="name">Name</label>

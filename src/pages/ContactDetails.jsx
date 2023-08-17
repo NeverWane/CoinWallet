@@ -20,7 +20,7 @@ export default function ContactDetails() {
         <section className="contact-details">
             <NavLink to='/contact'>Back</NavLink>
             <NavLink to={`/contact/edit/${contactId}`}>Edit</NavLink>
-            <img className="contact-img" src={contact.imgURL || 'src/assets/images/contactDefault.png'}>
+            <img className="contact-img" src={contact.imgURL || 'https://res.cloudinary.com/dpv9yspqs/image/upload/v1692266679/CoinWallet/userDefault_fb4jz5.png'}>
             </img>
             <div className="contact-name">Name: {contact.name}</div>
             <div className="contact-phone">Phone: {contact.phone}</div>
