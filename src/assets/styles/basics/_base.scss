@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+ul, button, h2, h3, li, body {
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #root {
+    height: 100%;
+    background-color: antiquewhite;
+}
+
+ul {
+    list-style: none;
+}

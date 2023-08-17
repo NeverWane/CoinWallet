@@ -1,0 +1,46 @@
+.app-header {
+    height: var(--marginSide);
+    background-color: burlywood;
+    border-block-end: 1px solid black;
+    font-weight: bold;
+
+    .header-content {
+        height: 100%;
+        justify-content: space-between;
+
+        .logo {
+            cursor: pointer;
+            font-size: 2rem;
+        }
+
+        >* {
+            display: grid;
+            height: 100%;
+            align-items: center;
+        }
+    }
+
+    .navbar {
+        border-inline-start: 1px solid black;
+
+        .nav-item {
+            display: grid;
+            align-items: center;
+            cursor: pointer;
+            height: 100%;
+            border-inline-end: 1px solid black;
+            padding-inline: 0.5rem;
+            transition: 0.4s;
+
+            &.active {
+                color: white;
+                border-block-end: 0.25rem inset blanchedalmond;
+            }
+
+            &:hover {
+                color: white;
+                border-block-end: 0.25rem inset blanchedalmond;
+            }
+        }
+    }
+}
