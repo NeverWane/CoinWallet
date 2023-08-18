@@ -1,28 +1,23 @@
-import { useEffect, useRef, useState } from "react"
-import { userService } from "../services/user.service"
+import { useEffect } from "react"
 import ContactList from "../cmps/ContactList"
 import ContactFilter from "../cmps/ContactFilter"
 import { useSearchParams } from "react-router-dom"
+import { setFilterBy, loadContacts, removeContact } from "../store/actions/contact.actions"
+import { useSelector } from "react-redux"
 
 export default function ContactIndex() {
-    const [contacts, setContacts] = useState()
+    const contacts = useSelector(state => state.contactModule.contacts)
     const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        userService.setFilterBy(Object.fromEntries(searchParams.entries()))
+        setFilterBy(Object.fromEntries(searchParams.entries()))
         loadContacts()
     }, [searchParams])
-
-    async function loadContacts() {
-        const contacts = await userService.query()
-        setContacts(contacts)
-    }
 
     function onRemoveContact(contactId) {
         return async () => {
             try {
-                setContacts(prevContacts => prevContacts.filter(contact => contact._id !== contactId))
-                userService.remove(contactId)
+                removeContact(contactId)
             } catch (err) {
                 loadContacts()
                 console.log('Failed to remove contact')
@@ -30,8 +25,8 @@ export default function ContactIndex() {
         }
     }
 
-    function onFilter(ev) {
-        const filterBy = userService.setFilterBy(Object.fromEntries(new FormData(ev.target.form).entries()))
+    async function onFilter(ev) {
+        const filterBy = await setFilterBy(Object.fromEntries(new FormData(ev.target.form).entries()))
         for (const key in filterBy) {
             if (!filterBy[key]) delete filterBy[key]
         }

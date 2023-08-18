@@ -1,6 +1,6 @@
 import { storageService } from './async-storage.service.js'
+import { contactService } from './contact.service.js'
 
-const CONTACT_KEY = 'contactDB'
 const USER_KEY = 'userDB'
 var gFilterBy = { txt: '' }
 
@@ -9,59 +9,50 @@ export const userService = {
     get,
     remove,
     save,
-    getEmptyContact,
+    getEmptyUser,
     getFilterBy,
     setFilterBy,
     getUser,
 }
 
-_loadContacts()
+_loadUsers()
 
 async function getUser() {
     let users = await storageService.query(USER_KEY)
-    if (!users || !users.length) {
-        const user = {
-            name: 'Default User',
-            coins: 100,
-            moves: []
-        }
-        await storageService.post(USER_KEY, user)
-        users = await storageService.query(USER_KEY)
-    }
     return users[0]
 }
 
 async function query() {
-    let contacts = await storageService.query(CONTACT_KEY)
-    if (!contacts || !contacts.length) {
-        for (const contact of premadeContacts) {
-            await storageService.post(CONTACT_KEY, contact, 0)
+    let users = await storageService.query(USER_KEY)
+    if (!users || !users.length) {
+        for (const user of premadeUsers) {
+            await storageService.post(USER_KEY, user, 0)
         }
-        contacts = await storageService.query(CONTACT_KEY)
+        users = await storageService.query(USER_KEY)
     }
     const regex = new RegExp(gFilterBy.txt, 'i')
-    contacts = contacts.filter(contact => regex.test(contact.name) || regex.test(contact.phone) || regex.test(contact.email))
-    return contacts
+    users = users.filter(user => regex.test(user.name) || regex.test(user.phone) || regex.test(user.email))
+    return users
 }
 
-function get(contactId) {
-    if (!contactId) return
-    return storageService.get(CONTACT_KEY, contactId)
+function get(userId) {
+    if (!userId) return
+    return storageService.get(USER_KEY, userId)
 }
 
-function remove(contactId) {
-    return storageService.remove(CONTACT_KEY, contactId)
+function remove(userId) {
+    return storageService.remove(USER_KEY, userId)
 }
 
-function save(contact) {
-    if (contact._id) {
-        return storageService.put(CONTACT_KEY, contact)
+function save(user) {
+    if (user._id) {
+        return storageService.put(USER_KEY, user)
     } else {
-        return storageService.post(CONTACT_KEY, contact)
+        return storageService.post(USER_KEY, user)
     }
 }
 
-function getEmptyContact(name = '', email = '', phone = '') {
+function getEmptyUser(name = '', email = '', phone = '') {
     return { _id: '', name, email, phone }
 }
 
@@ -73,11 +64,26 @@ function setFilterBy(filterBy = {}) {
     return gFilterBy = { ...filterBy }
 }
 
-async function _loadContacts() {
-    let contacts = await storageService.query(CONTACT_KEY)
-    if (!contacts || !contacts.length) {
-        for (const contact of premadeContacts) {
-            await storageService.post(CONTACT_KEY, contact, 0)
+async function _loadUsers() {
+    let users = await storageService.query(USER_KEY)
+    if (!users || !users.length) {
+        let defaultUser = {
+            name: 'Default User',
+            nickname: 'Default',
+            coins: 100,
+            phone: '1234567890',
+            email: 'default@default.default',
+            contacts: [],
+            moves: []
+        }
+        defaultUser = await storageService.post(USER_KEY, defaultUser)
+        for (let user of premadeContacts) {
+            user.nickname = user.name
+            user.contacts = []
+            user.moves = []
+            user.coins = 100
+            user = await storageService.post(USER_KEY, user)
+            contactService.save(user, defaultUser)
         }
     }
 }

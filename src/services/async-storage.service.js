@@ -10,8 +10,8 @@ function query(entityType, delay = 500) {
     return new Promise(resolve => setTimeout(() => resolve(_query(entityType)), delay))
 }
 
-function get(entityType, entityId) {
-    return query(entityType).then(entities => {
+function get(entityType, entityId, delay = 10) {
+    return query(entityType, delay).then(entities => {
         const entity = entities.find(entity => entity._id === entityId)
         if (!entity) throw new Error(`Get failed, cannot find entity with id: ${entityId} in: ${entityType}`)
         return entity
