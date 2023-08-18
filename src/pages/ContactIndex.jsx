@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { contactService } from "../services/contact.service"
+import { userService } from "../services/user.service"
 import ContactList from "../cmps/ContactList"
 import ContactFilter from "../cmps/ContactFilter"
 import { useSearchParams } from "react-router-dom"
@@ -9,12 +9,12 @@ export default function ContactIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        contactService.setFilterBy(Object.fromEntries(searchParams.entries()))
+        userService.setFilterBy(Object.fromEntries(searchParams.entries()))
         loadContacts()
     }, [searchParams])
 
     async function loadContacts() {
-        const contacts = await contactService.query()
+        const contacts = await userService.query()
         setContacts(contacts)
     }
 
@@ -22,7 +22,7 @@ export default function ContactIndex() {
         return async () => {
             try {
                 setContacts(prevContacts => prevContacts.filter(contact => contact._id !== contactId))
-                contactService.remove(contactId)
+                userService.remove(contactId)
             } catch (err) {
                 loadContacts()
                 console.log('Failed to remove contact')
@@ -31,7 +31,7 @@ export default function ContactIndex() {
     }
 
     function onFilter(ev) {
-        const filterBy = contactService.setFilterBy(Object.fromEntries(new FormData(ev.target.form).entries()))
+        const filterBy = userService.setFilterBy(Object.fromEntries(new FormData(ev.target.form).entries()))
         for (const key in filterBy) {
             if (!filterBy[key]) delete filterBy[key]
         }

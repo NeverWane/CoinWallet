@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, NavLink, useNavigate } from "react-router-dom"
-import { contactService } from "../services/contact.service"
+import { userService } from "../services/user.service"
 
 export default function ContactEdit() {
     const [contact, setContact] = useState()
@@ -12,7 +12,7 @@ export default function ContactEdit() {
     }, [])
 
     async function loadContact() {
-        const contact = await contactService.get(contactId) || contactService.getEmptyContact()
+        const contact = await userService.get(contactId) || userService.getEmptyContact()
         setContact(contact)
     }
 
@@ -21,7 +21,7 @@ export default function ContactEdit() {
         const data = Object.fromEntries(new FormData(ev.target).entries())
         let savedContact = { ...contact, ...data }
         try {
-            savedContact = await contactService.save(savedContact)
+            savedContact = await userService.save(savedContact)
             navigate(`/contact/${savedContact._id}`)
         } catch (err) {
             console.log('Error while saving contact')

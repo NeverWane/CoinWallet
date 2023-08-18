@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { contactService } from "../services/contact.service"
+import { userService } from "../services/user.service"
 import { NavLink, useParams } from "react-router-dom"
 
 export default function ContactDetails() {
@@ -11,7 +11,7 @@ export default function ContactDetails() {
     }, [])
 
     async function loadContact() {
-        const contact = await contactService.get(contactId)
+        const contact = await userService.get(contactId)
         setContact(contact)
     }
 
