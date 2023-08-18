@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import ContactList from "../cmps/ContactList"
 import ContactFilter from "../cmps/ContactFilter"
 import { useSearchParams } from "react-router-dom"
-import { setFilterBy, loadContacts, removeContact } from "../store/actions/contact.actions"
+import { setContactFilter, loadContacts, removeContact } from "../store/actions/contact.actions"
 import { useSelector } from "react-redux"
 
 export default function ContactIndex() {
@@ -10,7 +10,7 @@ export default function ContactIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        setFilterBy(Object.fromEntries(searchParams.entries()))
+        setContactFilter(Object.fromEntries(searchParams.entries()))
         loadContacts()
     }, [searchParams])
 
@@ -26,7 +26,7 @@ export default function ContactIndex() {
     }
 
     async function onFilter(ev) {
-        const filterBy = await setFilterBy(Object.fromEntries(new FormData(ev.target.form).entries()))
+        const filterBy = await setContactFilter(Object.fromEntries(new FormData(ev.target.form).entries()))
         for (const key in filterBy) {
             if (!filterBy[key]) delete filterBy[key]
         }

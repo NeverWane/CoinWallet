@@ -10,13 +10,15 @@ export const contactService = {
     setFilterBy,
 }
 
-async function query(loggedInUser = null, filterBy = gContactFilter) {
-    if (!loggedInUser) {
-        loggedInUser = await userService.get((await userService.getUser())?._id)
+async function query(user = null, filterBy = gContactFilter) {
+    if (!user) {
+        user = await userService.get((await userService.getUser())?._id)
+    } else {
+        user = { contacts: await userService.query(null) }
     }
-    if (!loggedInUser || !loggedInUser.contacts) return
+    if (!user || !user.contacts) return
     let fullContacts = []
-    for (const contact of loggedInUser.contacts) {
+    for (const contact of user.contacts) {
         const user = await userService.get(contact._id)
         if (!user) continue
         const fullContact = {

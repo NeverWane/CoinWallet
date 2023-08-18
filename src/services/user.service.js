@@ -22,7 +22,7 @@ async function getUser() {
     return users[0]
 }
 
-async function query() {
+async function query(filterBy = gFilterBy) {
     let users = await storageService.query(USER_KEY)
     if (!users || !users.length) {
         for (const user of premadeUsers) {
@@ -30,8 +30,12 @@ async function query() {
         }
         users = await storageService.query(USER_KEY)
     }
-    const regex = new RegExp(gFilterBy.txt, 'i')
-    users = users.filter(user => regex.test(user.name) || regex.test(user.phone) || regex.test(user.email))
+    if (filterBy) {
+        if (filterBy.txt) {
+            const regex = new RegExp(filterBy.txt, 'i')
+            users = users.filter(user => regex.test(user.name) || regex.test(user.phone) || regex.test(user.email))
+        }
+    }
     return users
 }
 
