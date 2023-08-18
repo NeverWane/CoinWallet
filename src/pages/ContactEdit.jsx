@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useParams, NavLink, useNavigate } from "react-router-dom"
-import { userService } from "../services/user.service"
+import { loadContact, updateContact } from "../store/actions/contact.actions"
+import { useSelector } from "react-redux"
 
 export default function ContactEdit() {
-    const [contact, setContact] = useState()
-    const navigate = useNavigate()
+    const contact = useSelector(state => state.contactModule.contact)
     const { contactId } = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        loadContact()
-    }, [])
-
-    async function loadContact() {
-        const contact = await userService.get(contactId) || userService.getEmptyContact()
-        setContact(contact)
-    }
+        loadContact(contactId)
+        
+        return () => {
+            loadContact(null)
+        }
+    }, [contactId])
 
     async function onSave(ev) {
         ev.preventDefault()
         const data = Object.fromEntries(new FormData(ev.target).entries())
-        let savedContact = { ...contact, ...data }
         try {
-            savedContact = await userService.save(savedContact)
-            navigate(`/contact/${savedContact._id}`)
+            await updateContact({ _id: contactId, ...data })
+            navigate(`/contact/${contactId}`)
         } catch (err) {
             console.log('Error while saving contact')
-            navigate('/')
+            console.log(err)
+            navigate(`/contact/${contactId}`)
         }
     }
 
@@ -36,12 +36,11 @@ export default function ContactEdit() {
             <img className="contact-img" src={contact?.imgURL || 'https://res.cloudinary.com/dpv9yspqs/image/upload/v1692266679/CoinWallet/userDefault_fb4jz5.png'}>
             </img>
             <form onSubmit={onSave}>
-                <label htmlFor="name">Name</label>
-                <input className="contact-name" defaultValue={contact?.name || ''} name="name" />
-                <label htmlFor="phone">Phone</label>
-                <input className="contact-phone" defaultValue={contact?.phone || ''} name="phone" />
-                <label htmlFor="email">Email</label>
-                <input className="contact-email" defaultValue={contact?.email || ''} name="email" />
+                <div className="contact-name">Name: {contact.name}</div>
+                <label htmlFor="nickname">Nickname</label>
+                <input className="contact-nick" placeholder={contact?.nickname || ''} name="nickname" />
+                <div className="contact-phone">Phone: {contact.phone}</div>
+                <div className="contact-email">Email: {contact.email}</div>
                 <button>Save</button>
             </form>
         </section>

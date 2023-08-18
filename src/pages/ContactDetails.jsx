@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react"
-import { userService } from "../services/user.service"
 import { NavLink, useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { loadContact } from "../store/actions/contact.actions"
 
 export default function ContactDetails() {
-    const [contact, setContact] = useState()
+    const contact = useSelector(state => state.contactModule.contact)
     const { contactId } = useParams()
 
     useEffect(() => {
-        loadContact()
-    }, [])
-
-    async function loadContact() {
-        const contact = await userService.get(contactId)
-        setContact(contact)
-    }
+        loadContact(contactId)
+        
+        return () => {
+            loadContact(null)
+        }
+    }, [contactId])
 
     if (!contact) return (<div>Loading...</div>)
     return (
@@ -23,6 +23,7 @@ export default function ContactDetails() {
             <img className="contact-img" src={contact.imgURL || 'https://res.cloudinary.com/dpv9yspqs/image/upload/v1692266679/CoinWallet/userDefault_fb4jz5.png'}>
             </img>
             <div className="contact-name">Name: {contact.name}</div>
+            <div className="contact-nick">Nickname: {contact.nickname}</div>
             <div className="contact-phone">Phone: {contact.phone}</div>
             <div className="contact-email">Email: {contact.email}</div>
         </section>

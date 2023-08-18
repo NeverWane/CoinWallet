@@ -5,7 +5,7 @@ export default function ContactPreview({ contact }) {
         <NavLink to={`/contact/${contact._id}`} className="contact-preview">
             <img className="contact-img" src={contact.imgURL || defaultUrl }>
             </img>
-            <div className="contact-name">{ contact.name }</div>
+            <div className="contact-name">{ contact.nickname || contact.name }</div>
         </NavLink>
     )
 }
