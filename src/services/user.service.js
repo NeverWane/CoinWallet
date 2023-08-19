@@ -65,6 +65,10 @@ async function query(filterBy = gFilterBy) {
             const regex = new RegExp(filterBy.txt, 'i')
             users = users.filter(user => regex.test(user.name) || regex.test(user.phone) || regex.test(user.email))
         }
+        if (filterBy.username) {
+            const regex = new RegExp(filterBy.username, 'i')
+            users = users.filter(user => regex.test(user.username))
+        }
     }
     return users
 }
@@ -78,16 +82,17 @@ function remove(userId) {
     return storageService.remove(USER_KEY, userId)
 }
 
-function save(user) {
+async function save(user) {
     if (user._id) {
         return storageService.put(USER_KEY, user)
     } else {
-        return storageService.post(USER_KEY, user)
+        const users = await query({ username: user.username })
+        return (!users.length) && (await storageService.post(USER_KEY, user))
     }
 }
 
 function getEmptyUser(name = '', email = '', phone = '') {
-    return { _id: '', name, email, phone }
+    return { _id: '', username: '', password: '', name, nickname: '', email, phone, coins: 100, contacts: [], moves: [] }
 }
 
 function getFilterBy() {

@@ -28,6 +28,27 @@ export async function loadUser(userId) {
     }
 }
 
+export async function addUser(user) {
+    try {
+        return await userService.save(user)
+    } catch (err) {
+        throw err
+    }
+}
+
+export async function login(user) {
+    try {
+        const userId = await userService.login(user)
+        if (userId) {
+            await loadUser(userId)
+        } else {
+            alert('Username and/or password incorrect!')
+        }
+    } catch (err) {
+        throw err
+    }
+}
+
 export async function removeUser(userId) {
     try {
         const action = {

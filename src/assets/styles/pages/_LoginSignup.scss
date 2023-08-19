@@ -1,0 +1,34 @@
+.login-signup {
+
+    label {
+        display: grid;
+        grid-template-columns: auto 70%;
+        grid-auto-flow: column;
+        height: fit-content;
+        justify-content: space-between;
+    }
+
+    .btn-sign {
+        justify-self: start;
+        background-color: burlywood;
+        border-radius: 0.5rem;
+        height: fit-content;
+        padding: 0.5rem;
+    }
+
+    .login-form,
+    .signup-form {
+        h2 {
+            margin-block-end: 1rem;
+        }
+
+        grid-auto-rows: max-content;
+        margin-block: 3rem;
+        padding-inline: 10%;
+        row-gap: 0.5rem;
+    }
+
+    .signup-form {
+        border-inline-start: 1px solid black;
+    }
+}
