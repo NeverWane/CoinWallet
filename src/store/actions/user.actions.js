@@ -62,6 +62,14 @@ export async function removeUser(userId) {
     }
 }
 
+export async function sendFunds(userId, amount) {
+    try {
+        await userService.sendFunds(userId, amount)
+    } catch (err) {
+        throw err
+    }
+}
+
 export async function updateUser(user) {
     try {
         user = await userService.save(user)

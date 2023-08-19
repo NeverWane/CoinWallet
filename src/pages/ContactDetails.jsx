@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { NavLink, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { loadContact } from "../store/actions/contact.actions"
+import TransferFund from "../cmps/TransferFund"
+import { sendFunds } from "../store/actions/user.actions"
 
 export default function ContactDetails() {
     const contact = useSelector(state => state.contactModule.contact)
@@ -15,6 +17,15 @@ export default function ContactDetails() {
         }
     }, [contactId])
 
+    async function onTransfer(ev) {
+        ev.preventDefault()
+        try {
+            await sendFunds(contactId, (new FormData(ev.target)).get('amount'))
+        } catch (err) {
+            console.log('Failed to transfer funds')
+        }
+    }
+
     if (!contact) return (<div>Loading...</div>)
     return (
         <section className="contact-details">
@@ -26,6 +37,7 @@ export default function ContactDetails() {
             <div className="contact-nick">Nickname: {contact.nickname}</div>
             <div className="contact-phone">Phone: {contact.phone}</div>
             <div className="contact-email">Email: {contact.email}</div>
+            <TransferFund user={contact} onTransfer={onTransfer} />
         </section>
     )
 }

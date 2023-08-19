@@ -12,6 +12,7 @@ export const userService = {
     getEmptyUser,
     getFilterBy,
     setFilterBy,
+    sendFunds,
     getUser,
     isLoggedIn,
     login,
@@ -88,6 +89,49 @@ async function save(user) {
     } else {
         const users = await query({ username: user.username })
         return (!users.length) && (await storageService.post(USER_KEY, user))
+    }
+}
+
+async function sendFunds(userId, amount) {
+    if (isNaN(amount)) {
+        alert('Invalid amount: Not a number')
+        return
+    }
+    if (amount <= 0) {
+        alert('Invalid amount: Amount must be positive')
+    }
+    amount = +amount
+    const loggedInUser = await userService.getUser()
+    if (!loggedInUser) {
+        alert('Not logged in')
+        return
+    }
+    if (loggedInUser.coins < amount) {
+        alert('Invalid amount: Not enough coins')
+        return
+    }
+    const recepient = await get(userId)
+    if (!recepient) {
+        alert('Invalid recepient')
+        return
+    }
+    try {
+        loggedInUser.coins -= amount
+        loggedInUser.moves.unshift({
+            to: { _id: recepient._id, name: recepient.name},
+            from: {_id: loggedInUser._id, name: loggedInUser.name},
+            date: Date.now()
+        })
+        await save(loggedInUser)
+        recepient.coins += amount
+        recepient.moves.unpush({
+            to: { _id: recepient._id, name: recepient.name},
+            from: {_id: loggedInUser._id, name: loggedInUser.name},
+            date: Date.now()
+        })
+        return await save(recepient)
+    } catch (err) {
+        console.log('Failed to send funds')
     }
 }
 
