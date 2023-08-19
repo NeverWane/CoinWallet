@@ -24,7 +24,6 @@ export default function ContactEdit() {
             navigate(`/contact/${contactId}`)
         } catch (err) {
             console.log('Error while saving contact')
-            console.log(err)
             navigate(`/contact/${contactId}`)
         }
     }

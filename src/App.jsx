@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import { Navigate, Route, HashRouter as Router, Routes } from 'react-router-dom'
 import ContactEdit from './pages/ContactEdit'
 import ContactSearch from './pages/ContactSearch'
+import Statistics from './pages/Statistics'
 function App() {
   const [page, setPage] = useState('home')
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/contact/:contactId' element={<ContactDetails />} />
           <Route path='/contact/search' element={<ContactSearch />} />
           <Route path='/contact/edit/:contactId?' element={<ContactEdit />} />
+          <Route path='/statistics' element={<Statistics />} />
         </Routes>
       </section>
     </Router>
