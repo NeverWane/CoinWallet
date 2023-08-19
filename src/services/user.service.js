@@ -72,6 +72,8 @@ async function _loadUsers() {
     let users = await storageService.query(USER_KEY)
     if (!users || !users.length) {
         let defaultUser = {
+            username: 'Default',
+            password: '123',
             name: 'Default User',
             nickname: 'Default',
             coins: 100,
@@ -83,6 +85,8 @@ async function _loadUsers() {
         defaultUser = await storageService.post(USER_KEY, defaultUser)
         for (let user of premadeContacts) {
             user.nickname = user.name
+            user.username = user.name.replace(' ', '')
+            user.password = '123'
             user.contacts = []
             user.moves = []
             user.coins = 100

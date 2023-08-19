@@ -1,0 +1,11 @@
+.page-stats {
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 35vh;
+
+        .recharts-responsive-container {
+            position: absolute;
+        }
+    }
+}
