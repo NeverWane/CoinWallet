@@ -1,22 +1,31 @@
+import { useEffect } from "react"
 import { userService } from "../services/user.service"
 import { useNavigate } from "react-router-dom"
+import { loadUser } from "../store/actions/user.actions"
+import { useSelector } from "react-redux"
 export default function LoginSignup() {
+    const user = useSelector(state => state.userModule.user)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (user) {
+            navigate('/')
+        }
+    }, [user])
 
     async function onSignin(ev) {
         ev.preventDefault()
         const data = Object.fromEntries(new FormData(ev.target))
-        const users = await userService.query()
-        for (const user of users) {
-            if (user.username === data.username) {
-                if (user.password === data.password) {
-                    document.cookie = `coinUser=${JSON.stringify(user)}; expiryDate=${Date.now() + 1000 * 60 * 60 * 24 * 30}; path=/`
-                    navigate('/')
-                    return
-                }
+        try {
+            const userId = await userService.login(data)
+            if (userId) {
+                await loadUser(userId)
+            } else {
+                alert('Username and/or password incorrect!')
             }
+        } catch(err) {
+            throw err
         }
-        alert('Username and/or password incorrect!')
     }
 
     return (

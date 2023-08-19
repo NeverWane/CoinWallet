@@ -13,13 +13,43 @@ export const userService = {
     getFilterBy,
     setFilterBy,
     getUser,
+    isLoggedIn,
+    login,
+    logout,
 }
 
 _loadUsers()
 
 async function getUser() {
-    let users = await storageService.query(USER_KEY)
-    return users[0]
+    const user = JSON.parse(document.cookie?.split('; ')?.find(str => str?.startsWith('coinUser='))?.replace('coinUser=', '') || '{}')
+    if (!user) return false
+    const savedUser = await get(user._id)
+    return savedUser
+}
+
+async function isLoggedIn() {
+    const user = await getUser()
+    if (!user) return false
+    const savedUser = await get(user._id)
+    if (!savedUser) return false
+    return user.username === savedUser.username && user.password === savedUser.password
+}
+
+async function login(data) {
+    const users = await query()
+    for (const user of users) {
+        if (user.username === data.username) {
+            if (user.password === data.password) {
+                document.cookie = `coinUser=${JSON.stringify(user)}; expiryDate=${Date.now() + 1000 * 60 * 60 * 24 * 30}; path=/`
+                return user._id
+            }
+        }
+    }
+    return false
+}
+
+async function logout() {
+    document.cookie = `coinUser={}; expiryDate=0; path=/`
 }
 
 async function query(filterBy = gFilterBy) {

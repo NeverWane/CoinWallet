@@ -28,9 +28,13 @@
             align-items: center;
             cursor: pointer;
             height: 100%;
+            border: none;
+            font-weight: bold;
             border-inline-end: 1px solid black;
             padding-inline: 0.5rem;
             transition: 0.4s;
+            color: black;
+            background-color: transparent;
 
             &.active {
                 color: white;

@@ -15,4 +15,17 @@
             aspect-ratio: 1 / 1;
         }
     }
+
+    .btn {
+        cursor: pointer;
+        border-radius: 0.5rem;
+    }
+
+    .btn-add {
+        background-color: rgb(44, 171, 44);
+    }
+
+    .btn-remove {
+        background-color: rgb(216, 93, 44);
+    }
 }
