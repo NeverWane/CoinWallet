@@ -14,26 +14,7 @@ import { loadUser } from './store/actions/user.actions'
 
 function RouteGuard({ children }) {
   const user = useSelector(state => state.userModule.user)
-  const refChecked = useRef(false)
-  useEffect(() => {
-    refChecked.current = false
-    checkLoggedIn()
-  }, [user])
-
-  async function checkLoggedIn() {
-    refChecked.current = await userService.isLoggedIn()
-  }
-
-  if (user) {
-    return <>{children}</>
-  } else if (refChecked.current) {
-    return <Navigate to={'/login'} />
-  }
-}
-
-function App() {
-  const [page, setPage] = useState('home')
-  const user = useSelector(state => state.userModule.user)
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     checkLoggedIn()
@@ -43,9 +24,21 @@ function App() {
     const isLoggedIn = await userService.isLoggedIn()
     if (!user && isLoggedIn) {
       const userId = (await userService.getUser())._id
-      loadUser(userId)
+      await loadUser(userId)
     }
+    setChecked(true)
   }
+
+  if (!checked) return <div>Loading...</div>
+  if (user) {
+    return <>{children}</>
+  } else {
+    return <Navigate to={'/login'} />
+  }
+}
+
+function App() {
+  const [page, setPage] = useState('home')
 
   function setCurrentPage(pageName) {
     return () => {

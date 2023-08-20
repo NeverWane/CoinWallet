@@ -28,7 +28,7 @@ async function query(user = null, filterBy = gContactFilter) {
             phone: savedUser.phone,
             email: savedUser.email,
             imgUrl: savedUser.imgUrl,
-            moves: user.moves?.filter(move => move.to._id === user._id || move.from._id === user._id) || []
+            moves: savedUser.moves?.filter(move => move.to._id === user._id || move.from._id === user._id) || []
         }
         fullContacts.push(fullContact)
     }
