@@ -25,6 +25,10 @@ async function getUser() {
     const user = JSON.parse(document.cookie?.split('; ')?.find(str => str?.startsWith('coinUser='))?.replace('coinUser=', '') || '{}')
     if (!user) return false
     const savedUser = await get(user._id)
+    if (!savedUser) {
+        logout()
+        return null
+    }
     return savedUser
 }
 
@@ -120,14 +124,16 @@ async function sendFunds(userId, amount) {
         loggedInUser.moves.unshift({
             to: { _id: recepient._id, name: recepient.name},
             from: {_id: loggedInUser._id, name: loggedInUser.name},
-            date: Date.now()
+            date: Date.now(),
+            amount
         })
         await save(loggedInUser)
         recepient.coins += amount
-        recepient.moves.unpush({
+        recepient.moves.unshift({
             to: { _id: recepient._id, name: recepient.name},
             from: {_id: loggedInUser._id, name: loggedInUser.name},
-            date: Date.now()
+            date: Date.now(),
+            amount
         })
         return await save(recepient)
     } catch (err) {

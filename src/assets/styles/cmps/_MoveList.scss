@@ -1,0 +1,13 @@
+.move-list {
+    background-color: aliceblue;
+    width: fit-content;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-block: 1rem;
+    
+    .move-preview {
+        padding-block: 0.5rem;
+        row-gap: 0.5rem;
+        border-block-end: 1px solid black;
+    }
+}

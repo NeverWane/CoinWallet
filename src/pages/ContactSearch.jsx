@@ -26,6 +26,7 @@ export default function ContactSearch() {
             setContacts(contacts)
         } catch(err) {
             console.log('Failed to load users')
+            console.log(err)
         }
     }
 

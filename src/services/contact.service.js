@@ -12,22 +12,23 @@ export const contactService = {
 
 async function query(user = null, filterBy = gContactFilter) {
     if (!user) {
-        user = await userService.get((await userService.getUser())?._id)
+        user = await userService.getUser()
     } else {
-        user = { contacts: await userService.query(null) }
+        user = { _id: await userService.getUser()._id, contacts: await userService.query(null) }
     }
     if (!user || !user.contacts) return
     let fullContacts = []
     for (const contact of user.contacts) {
-        const user = await userService.get(contact._id)
-        if (!user) continue
+        const savedUser = await userService.get(contact._id)
+        if (!savedUser) continue
         const fullContact = {
             _id: contact._id,
-            name: user.name,
-            nickname: contact.nickname || user.nickname,
-            phone: user.phone,
-            email: user.email,
-            imgUrl: user.imgUrl
+            name: savedUser.name,
+            nickname: contact.nickname || savedUser.nickname,
+            phone: savedUser.phone,
+            email: savedUser.email,
+            imgUrl: savedUser.imgUrl,
+            moves: user.moves?.filter(move => move.to._id === user._id || move.from._id === user._id) || []
         }
         fullContacts.push(fullContact)
     }
@@ -54,7 +55,7 @@ async function remove(contactId, loggedInUser = null) {
 
 async function save(contact, loggedInUser = null) {
     if (!loggedInUser) {
-        loggedInUser = await userService.get((await userService.getUser())?._id)
+        loggedInUser = await userService.getUser()
     }
     if (!loggedInUser || !loggedInUser.contacts) return
     let newContact = { _id: contact._id }

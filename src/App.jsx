@@ -14,9 +14,19 @@ import { loadUser } from './store/actions/user.actions'
 
 function RouteGuard({ children }) {
   const user = useSelector(state => state.userModule.user)
+  const refChecked = useRef(false)
+  useEffect(() => {
+    refChecked.current = false
+    checkLoggedIn()
+  }, [user])
+
+  async function checkLoggedIn() {
+    refChecked.current = await userService.isLoggedIn()
+  }
+
   if (user) {
     return <>{children}</>
-  } else {
+  } else if (refChecked.current) {
     return <Navigate to={'/login'} />
   }
 }
