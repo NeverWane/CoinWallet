@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { userService } from "../services/user.service"
 import { useNavigate } from "react-router-dom"
-import { addUser, loadUser, login } from "../store/actions/user.actions"
+import { addUser, login } from "../store/actions/user.actions"
 import { useSelector } from "react-redux"
 export default function LoginSignup() {
     const user = useSelector(state => state.userModule.user)
@@ -45,11 +45,11 @@ export default function LoginSignup() {
                 <h2>Login</h2>
                 <label>
                     Username
-                    <input type="text" placeholder="Username" name="username" />
+                    <input type="text" placeholder="Username" name="username" defaultValue={'Default'} />
                 </label>
                 <label>
                     Password
-                    <input type="password" placeholder="Password" name="password" />
+                    <input type="password" placeholder="Password" name="password" defaultValue={'123'} />
                 </label>
                 <button className="btn btn-sign">Sign in</button>
             </form>

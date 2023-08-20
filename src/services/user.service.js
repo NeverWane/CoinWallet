@@ -111,7 +111,7 @@ async function sendFunds(userId, amount) {
         alert('Invalid amount: Amount must be positive')
         return
     }
-    amount = +amount
+    amount = (parseInt(((+amount) * 100))) / 100
     const loggedInUser = await userService.getUser()
     if (!loggedInUser) {
         alert('Not logged in')
@@ -127,7 +127,7 @@ async function sendFunds(userId, amount) {
         return
     }
     try {
-        loggedInUser.coins -= amount
+        loggedInUser.coins = (parseInt(loggedInUser.coins * 100) - parseInt(amount * 100)) / 100
         loggedInUser.moves.unshift({
             to: { _id: recepient._id, name: recepient.name},
             from: {_id: loggedInUser._id, name: loggedInUser.name},
@@ -135,7 +135,7 @@ async function sendFunds(userId, amount) {
             amount
         })
         await save(loggedInUser)
-        recepient.coins += amount
+        recepient.coins = (parseInt(recepient.coins * 100) - parseInt(amount * 100)) / 100
         recepient.moves.unshift({
             to: { _id: recepient._id, name: recepient.name},
             from: {_id: loggedInUser._id, name: loggedInUser.name},
