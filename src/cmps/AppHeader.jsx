@@ -14,7 +14,8 @@ export default function AppHeader() {
             navigate('/')
         }
     }
-
+    
+    const loginActive = user ? '' : 'active'
     return (
         <header className="app-header full main-layout">
             <section className="header-content grid column">
@@ -23,7 +24,7 @@ export default function AppHeader() {
                     <NavLink to='/' className={`nav-item nav-home`}>Home</NavLink>
                     <NavLink to='/contact' className={`nav-item nav-contact`}>Contacts</NavLink>
                     <NavLink to='/statistics' className={`nav-item nav-stat`}>Statistics</NavLink>
-                    <button className="nav-item btn-log" onClick={onLog}>
+                    <button className={`nav-item btn-log ${loginActive}`} onClick={onLog}>
                         {user && 'Logout' || 'Login'}
                     </button>
                 </nav>

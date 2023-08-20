@@ -58,16 +58,14 @@ async function save(contact, loggedInUser = null) {
         loggedInUser = await userService.getUser()
     }
     if (!loggedInUser || !loggedInUser.contacts) return
-    let newContact = { _id: contact._id }
-    for (const currContact of loggedInUser.contacts) {
-        if (contact.nickname && currContact._id === contact._id) {
-            currContact.nickname = contact.nickname
-            newContact = null
-            break
+    let updatedContact = loggedInUser.contacts.find(currContact => contact._id === currContact._id)
+    if (updatedContact) {
+        if (contact.nickname) {
+            updatedContact.nickname = contact.nickname
         }
-    }
-    if (newContact) {
-        loggedInUser.contacts.push(newContact)
+    } else {
+        updatedContact = { _id: contact._id }
+        loggedInUser.contacts.push(updatedContact)
     }
     return userService.save(loggedInUser)
 }

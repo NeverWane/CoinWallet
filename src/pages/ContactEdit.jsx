@@ -30,14 +30,14 @@ export default function ContactEdit() {
 
     if (contactId && !contact) return (<div>Loading...</div>)
     return (
-        <section className="contact-edit">
-            <NavLink to='/contact'>Back</NavLink>
+        <section className="contact-edit grid">
+            <NavLink className={'btn btn-back'} to='/contact'>Back</NavLink>
             <img className="contact-img" src={contact?.imgURL || 'https://res.cloudinary.com/dpv9yspqs/image/upload/v1692266679/CoinWallet/userDefault_fb4jz5.png'}>
             </img>
             <form onSubmit={onSave}>
                 <div className="contact-name">Name: {contact.name}</div>
-                <label htmlFor="nickname">Nickname</label>
-                <input className="contact-nick" placeholder={contact?.nickname || ''} name="nickname" />
+                <label htmlFor="nickname">Nickname: </label>
+                <input type="text" className="contact-nick" placeholder={contact?.nickname || ''} name="nickname" />
                 <div className="contact-phone">Phone: {contact.phone}</div>
                 <div className="contact-email">Email: {contact.email}</div>
                 <button>Save</button>

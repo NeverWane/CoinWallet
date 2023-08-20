@@ -17,7 +17,7 @@ export default function ContactList({ contacts, onRemove, ...props }) {
                         <ContactPreview contact={contact} />
                         {props.onAdd && props.currContacts.findIndex(currContact => currContact._id === contact._id) === -1
                             && <button onClick={props.onAdd(contact._id)} className="btn btn-add">Add</button>
-                            || <button onClick={onRemove(contact._id)} className="btn btn-remove">x</button>
+                            || <button onClick={onRemove(contact._id)} className="btn btn-remove">Remove</button>
                         }
                     </li>
                 )
