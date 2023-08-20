@@ -1,5 +1,6 @@
 export const SET_USERS = 'SET_USERS'
 export const SET_USER = 'SET_USER'
+export const SET_CURR_USER = 'SET_CURR_USER'
 export const ADD_USER = 'ADD_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const UPDATE_USER = 'UPDATE_USER'
@@ -8,6 +9,7 @@ export const SET_USER_FILTER = 'SET_USER_FILTER'
 const initialState = {
     users: null,
     user: null,
+    currUser: null,
     filterBy: {
         txt: ''
     }
@@ -24,6 +26,11 @@ export function userReducer(state = initialState, action = {}) {
             return {
                 ...state,
                 user: action.user
+            }
+        case SET_CURR_USER:
+            return {
+                ...state,
+                currUser: action.user
             }
         case ADD_USER:
             return {

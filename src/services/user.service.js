@@ -78,9 +78,15 @@ async function query(filterBy = gFilterBy) {
     return users
 }
 
-function get(userId) {
+async function get(userId, mini = false) {
     if (!userId) return
-    return storageService.get(USER_KEY, userId)
+    const user = await storageService.get(USER_KEY, userId)
+    if (mini) {
+        delete user.username
+        delete user.password
+        delete user.moves
+    }
+    return user
 }
 
 function remove(userId) {
@@ -103,6 +109,7 @@ async function sendFunds(userId, amount) {
     }
     if (amount <= 0) {
         alert('Invalid amount: Amount must be positive')
+        return
     }
     amount = +amount
     const loggedInUser = await userService.getUser()

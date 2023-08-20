@@ -36,7 +36,7 @@ export default function ContactIndex() {
     if (!contacts) return (<div>Loading...</div>)
     return (
         <section className="contact-index">
-            <h2>Contacts</h2>
+            <h2 className="list-header">Contacts</h2>
             <ContactFilter onFilter={onFilter} />
             <ContactList onRemove={onRemoveContact} contacts={contacts} />
         </section>

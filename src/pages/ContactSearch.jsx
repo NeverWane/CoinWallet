@@ -24,7 +24,7 @@ export default function ContactSearch() {
             let contacts = await getContacts(true)
             contacts = contacts.filter(contact => contact._id !== userId)
             setContacts(contacts)
-        } catch(err) {
+        } catch (err) {
             console.log('Failed to load users')
             console.log(err)
         }
@@ -59,12 +59,14 @@ export default function ContactSearch() {
             }
         }
     }
+    
     return (
-        <section className="contact-index">
+        <section className="contact-search contact-index">
+            <h2 className="list-header">Find Users</h2>
             <ContactFilter onFilter={onFilter} key={'full'} />
             {contacts && currContacts &&
-            <ContactList onRemove={onRemoveContact} onAdd={onAddContact} contacts={contacts} currContacts={currContacts} />
-            || <div>Loading...</div>
+                <ContactList onRemove={onRemoveContact} onAdd={onAddContact} contacts={contacts} currContacts={currContacts} />
+                || <div>Loading...</div>
             }
         </section>
     )

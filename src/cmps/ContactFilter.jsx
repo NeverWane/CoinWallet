@@ -7,8 +7,12 @@ export default function ContactFilter({ onFilter }) {
         return query.get(key) || ''
     }
 
+    function preventDefault(ev) {
+        ev.preventDefault()
+    }
+
     return (
-        <form className="contact-filter" onInput={onFilter}>
+        <form className="contact-filter" onInput={onFilter} onSubmit={preventDefault}>
             <input type="text" placeholder="Search" name="txt" defaultValue={getParam('txt')} />
         </form>
     )

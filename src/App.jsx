@@ -11,6 +11,7 @@ import { userService } from './services/user.service'
 import LoginSignup from './pages/LoginSignup'
 import { useSelector } from 'react-redux'
 import { loadUser } from './store/actions/user.actions'
+import UserDetails from './pages/UserDetails'
 
 function RouteGuard({ children }) {
   const user = useSelector(state => state.userModule.user)
@@ -55,6 +56,7 @@ function App() {
           <Route path='/contact' element={<RouteGuard><ContactIndex /></RouteGuard>} />
           <Route path='/contact/:contactId' element={<RouteGuard><ContactDetails /></RouteGuard>} />
           <Route path='/contact/search' element={<RouteGuard><ContactSearch /></RouteGuard>} />
+          <Route path='/user/:userId' element={<RouteGuard><UserDetails /></RouteGuard>} />
           <Route path='/contact/edit/:contactId?' element={<RouteGuard><ContactEdit /></RouteGuard>} />
           <Route path='/statistics' element={<RouteGuard><Statistics /></RouteGuard>} />
           <Route path='/login' element={<LoginSignup />} />

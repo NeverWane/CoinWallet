@@ -4,4 +4,8 @@
     grid-auto-rows: max-content;
     height: 100%;
     justify-items: center;
+
+    .list-header {
+        margin-block: 1rem;
+    }
 }

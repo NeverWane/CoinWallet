@@ -1,14 +1,23 @@
+// SETUP
 @import url('./setup/_vars.scss');
 @import url('./setup/_helpers.scss');
+
+// BASE
 @import url('./basics/_base.scss');
 @import url('./basics/_layout.scss');
+
+// CMPS
 @import url('./cmps/_ContactList.scss');
 @import url('./cmps/_ContactPreview.scss');
+@import url('./cmps/_ContactFilter.scss');
+@import url('./cmps/_AppHeader.scss');
+@import url('./cmps/_TransferFund.scss');
+@import url('./cmps/_MoveList.scss');
+@import url('./cmps/_ToggleContact.scss');
+
+// PAGES
 @import url('./pages/_ContactIndex.scss');
 @import url('./pages/_ContactDetails.scss');
 @import url('./pages/_ContactEdit.scss');
 @import url('./pages/_Statistics.scss');
 @import url('./pages/_LoginSignup.scss');
-@import url('./cmps/_AppHeader.scss');
-@import url('./cmps/_TransferFund.scss');
-@import url('./cmps/_MoveList.scss');
